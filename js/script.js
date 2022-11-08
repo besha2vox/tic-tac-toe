@@ -46,7 +46,6 @@ function stepZero(target) {
 }
 
 function onGameClick(e) {
-    console.log(e.target.nodeName);
     if (e.target.nodeName !== 'DIV') return;
     if (!step) stepCross(e.target);
     if (step) stepZero(e.target);
@@ -78,12 +77,20 @@ function isContainsO(array) {
     return array.every((el) => refs.fields[el].classList.contains('o'));
 }
 
+function hasWinner() {
+    return winCombo.some(
+        (array, i) => isContainsX(array) || isContainsO(array)
+    );
+}
+
 function checkWinner() {
     winCombo.forEach((array) => {
         if (isContainsX(array)) xWinner(array);
         if (isContainsO(array)) oWinner(array);
-        if (count === 9) refs.result.textContent = 'DWAW';
     });
+    if (count === 9) {
+        if (!hasWinner()) refs.result.textContent = 'DWAW';
+    }
 }
 
 function addClass(winCombination) {
