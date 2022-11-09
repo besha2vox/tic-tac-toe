@@ -191,13 +191,16 @@ export default function ai(fields, step) {
 
     //*>>------------------|AI step for step (random)|------------------<<
 
-    emptyFields = emptyFieldsFilter(fields);
-    return emptyFields[randomaizerForAI()];
+    emptyFields = emptyFieldsFilter([field1, field3, field7, field9]);
+    let indx = emptyFields[randomaizerForAI()];
+
+    return indx;
 }
 
 function emptyFieldsFilter(fields) {
-    return [...fields].reduce((acc, field, i) => {
-        if (!field.classList.contains('clicked')) acc.push(i);
+    return fields.reduce((acc, field, i) => {
+        console.log(field);
+        if (!field.classList.contains('clicked')) acc.push([0, 2, 6, 8][i]);
         return acc;
     }, []);
 }
