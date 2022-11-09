@@ -17,13 +17,13 @@ export default function ai(fields, step) {
 
     //*>>---------------------|AI first step|---------------------<<
 
-    if (step === 2) {
-        if (!field5.classList.contains('clicked')) return 4;
-        if (field5.classList.contains('clicked')) {
-            let randomNum = Math.floor(Math.random() * 4);
-            return [0, 2, 6, 8][randomNum];
-        }
-    }
+    // if (step === 2) {
+    //     if (!field5.classList.contains('clicked')) return 4;
+    //     if (field5.classList.contains('clicked')) {
+    //         let randomNum = Math.floor(Math.random() * 4);
+    //         return [0, 2, 5, 6, 8][randomNum];
+    //     }
+    // }
 
     //*>>--------------------|AI steps to win|--------------------<<
 
@@ -65,6 +65,15 @@ export default function ai(fields, step) {
         !field4.classList.contains('clicked')
     ) {
         return 3;
+    }
+
+    if (
+        ((field1.classList.contains('o') && field9.classList.contains('o')) ||
+            (field3.classList.contains('o') &&
+                field7.classList.contains('o'))) &&
+        !field5.classList.contains('clicked')
+    ) {
+        return 4;
     }
 
     if (
@@ -150,6 +159,15 @@ export default function ai(fields, step) {
     }
 
     if (
+        ((field1.classList.contains('x') && field9.classList.contains('x')) ||
+            (field3.classList.contains('x') &&
+                field7.classList.contains('x'))) &&
+        !field5.classList.contains('clicked')
+    ) {
+        return 4;
+    }
+
+    if (
         ((field3.classList.contains('x') && field9.classList.contains('x')) ||
             (field4.classList.contains('x') &&
                 field5.classList.contains('x'))) &&
@@ -191,21 +209,33 @@ export default function ai(fields, step) {
 
     //*>>------------------|AI step for step (random)|------------------<<
 
-    emptyFields = emptyFieldsFilter([field1, field3, field7, field9]);
+    emptyFields = emptyCornerFields([field1, field3, field5, field7, field9]);
+    console.log('emptyFields', emptyFields);
     let indx = emptyFields[randomaizerForAI()];
 
-    return indx;
+    if (indx !== undefined) return indx;
+
+    emptyFields = emptyFieldsFilter(fields);
+    return emptyFields[randomaizerForAI()];
 }
 
 function emptyFieldsFilter(fields) {
-    return fields.reduce((acc, field, i) => {
+    console.log('fields', fields);
+    return [...fields].reduce((acc, field, i) => {
         console.log(field);
-        if (!field.classList.contains('clicked')) acc.push([0, 2, 6, 8][i]);
+        if (!field.classList.contains('clicked')) acc.push(i);
+        console.log('acc', acc);
+        return acc;
+    }, []);
+}
+
+function emptyCornerFields(fields) {
+    return fields.reduce((acc, field, i) => {
+        if (!field.classList.contains('clicked')) acc.push([0, 2, 4, 6, 8][i]);
         return acc;
     }, []);
 }
 
 function randomaizerForAI() {
-    console.log('emptyFields.length', emptyFields.length);
     return Math.floor(Math.random() * emptyFields.length);
 }
