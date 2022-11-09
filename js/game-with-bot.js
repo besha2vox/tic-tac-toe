@@ -1,3 +1,6 @@
+import ai from './bot-algorithm.js';
+import { winCombo } from './win-combo.js';
+
 const refs = {
     game: document.querySelector('.game'),
     result: document.querySelector('.result'),
@@ -8,18 +11,6 @@ const refs = {
 let step = false;
 let count = 0;
 let timeoutId = null;
-let emptyFields = [];
-
-const winCombo = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-];
 
 refs.btnGame.addEventListener('click', newGame);
 refs.game.addEventListener('click', onGameClick);
@@ -66,26 +57,16 @@ function stepZero() {
     step = !step;
     count += 1;
 
-    emptyFieldsFilter();
+    // emptyFieldsFilter();
 
-    let indx = randomaizerForAI();
-    emptyFields[indx].innerHTML = zero;
-    emptyFields[indx].classList.add('o', 'clicked');
+    let indx = ai(refs.fields, count);
+
+    refs.fields[indx].innerHTML = zero;
+    refs.fields[indx].classList.add('o', 'clicked');
 
     checkWinner();
 
     refs.game.addEventListener('click', onGameClick);
-}
-
-function emptyFieldsFilter() {
-    emptyFields = [...refs.fields].filter(
-        (field) => !field.classList.contains('clicked')
-    );
-    console.log('emptyFields', emptyFields);
-}
-
-function randomaizerForAI() {
-    return Math.floor(Math.random() * emptyFields.length);
 }
 
 //* --------------------|checkWinner|--------------------
