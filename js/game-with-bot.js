@@ -57,8 +57,6 @@ function stepZero() {
     step = !step;
     count += 1;
 
-    // emptyFieldsFilter();
-
     let indx = ai(refs.fields, count);
 
     refs.fields[indx].innerHTML = zero;
