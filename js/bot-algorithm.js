@@ -18,14 +18,25 @@ export default function ai(fields, step) {
 
     //*>>-----------|AI can't lose if he takes this step |--------<<
 
-    if (
-        step === 2 &&
-        (field1.classList.contains('x') ||
-            field3.classList.contains('x') ||
-            field7.classList.contains('x') ||
-            field9.classList.contains('x'))
-    ) {
-        return indxForEmptyEdgeFields([field2, field4, field6, field8]);
+    // if (
+    //     step === 2 &&
+    //     (field1.classList.contains('x') ||
+    //         field3.classList.contains('x') ||
+    //         field7.classList.contains('x') ||
+    //         field9.classList.contains('x'))
+    // ) {
+    //     return indxForEmptyEdgeFields([field2, field4, field6, field8]);
+    // }
+
+    if (step === 2) {
+        if (field1.classList.contains('x'))
+            return indxForEmptyEdgeFields([field2, field4]);
+        if (field3.classList.contains('x'))
+            return indxForEmptyEdgeFields([field2, field6]);
+        if (field7.classList.contains('x'))
+            return indxForEmptyEdgeFields([field4, field8]);
+        if (field9.classList.contains('x'))
+            return indxForEmptyEdgeFields([field6, field8]);
     }
 
     //*>>--------------------|AI steps to win|--------------------<<
@@ -165,19 +176,6 @@ export default function ai(fields, step) {
         ((field1.classList.contains('x') && field9.classList.contains('x')) ||
             (field3.classList.contains('x') &&
                 field7.classList.contains('x'))) &&
-        field5.classList.contains('clicked') &&
-        field5.classList.contains('clicked') &&
-        [field2, field4, field6, field8].some(
-            (field) => !field.classList.contains('clicked')
-        )
-    ) {
-        return indxForEmptyEdgeFields([field2, field4, field6, field8]);
-    }
-
-    if (
-        ((field1.classList.contains('x') && field9.classList.contains('x')) ||
-            (field3.classList.contains('x') &&
-                field7.classList.contains('x'))) &&
         !field5.classList.contains('clicked')
     ) {
         return 4;
@@ -223,7 +221,21 @@ export default function ai(fields, step) {
         return 8;
     }
 
+    if (
+        ((field1.classList.contains('x') && field9.classList.contains('x')) ||
+            (field3.classList.contains('x') &&
+                field7.classList.contains('x'))) &&
+        field5.classList.contains('clicked') &&
+        field5.classList.contains('clicked') &&
+        [field2, field4, field6, field8].some(
+            (field) => !field.classList.contains('clicked')
+        )
+    ) {
+        return indxForEmptyEdgeFields([field2, field4, field6, field8]);
+    }
+
     //*>>------------------|AI step for step (random)|------------------<<
+    console.log('step', random);
 
     emptyFields = emptyCornerFields([field1, field3, field5, field7, field9]);
     indx = emptyFields[randomaizerForAI()];
