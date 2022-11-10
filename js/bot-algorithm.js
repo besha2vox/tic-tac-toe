@@ -235,7 +235,6 @@ export default function ai(fields, step) {
     }
 
     //*>>------------------|AI step for step (random)|------------------<<
-    console.log('step', random);
 
     emptyFields = emptyCornerFields([field1, field3, field5, field7, field9]);
     indx = emptyFields[randomaizerForAI()];
