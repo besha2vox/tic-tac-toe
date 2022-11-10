@@ -25,10 +25,7 @@ export default function ai(fields, step) {
             field7.classList.contains('x') ||
             field9.classList.contains('x'))
     ) {
-        emptyFields = emptyEdgeFields([field2, field4, field6, field8]);
-        indx = emptyFields[randomaizerForAI()];
-
-        return indx;
+        return indxForEmptyEdgeFields([field2, field4, field6, field8]);
     }
 
     //*>>--------------------|AI steps to win|--------------------<<
@@ -174,10 +171,7 @@ export default function ai(fields, step) {
             (field) => !field.classList.contains('clicked')
         )
     ) {
-        emptyFields = emptyEdgeFields([field2, field4, field6, field8]);
-        indx = emptyFields[randomaizerForAI()];
-
-        return indx;
+        return indxForEmptyEdgeFields([field2, field4, field6, field8]);
     }
 
     if (
@@ -245,6 +239,13 @@ function emptyFieldsFilter(fields) {
         if (!field.classList.contains('clicked')) acc.push(i);
         return acc;
     }, []);
+}
+
+function indxForEmptyEdgeFields(fields) {
+    emptyFields = emptyEdgeFields(fields);
+    indx = emptyFields[randomaizerForAI()];
+
+    return indx;
 }
 
 function emptyEdgeFields(fields) {

@@ -1,11 +1,15 @@
 import ai from './bot-algorithm.js';
 import { winCombo } from './win-combo.js';
+import { zero, cross } from './template.js';
 
 const refs = {
     game: document.querySelector('.game'),
     result: document.querySelector('.result'),
     btnGame: document.querySelector('.new-game'),
     fields: document.querySelectorAll('.field'),
+    aiWinsCounter: document.querySelector('.ai-wins-counter'),
+    playerWinsCounter: document.querySelector('.player-wins-counter'),
+    drawsCounter: document.querySelector('.draws-counter'),
 };
 
 let step = false;
@@ -16,17 +20,6 @@ refs.btnGame.addEventListener('click', newGame);
 refs.game.addEventListener('click', onGameClick);
 
 //* templates
-
-const zero = `<svg class="zero">
-				<circle r="45" cx="58" cy="58" stroke="blue" stroke-width="10" 
-                fill="none" stroke-linecap="round" />
-			</svg>`;
-const cross = `<svg class="cross">
-				<line class="first" x1="15" y1="15" x2="100" y2="100" 
-                stroke="red" stroke-width="10" stroke-linecap="round" />
-				<line class="second" x1="100" y1="15" x2="15" y2="100" 
-                stroke="red" stroke-width="10" stroke-linecap="round" />
-			</svg>`;
 
 //* --------------------|onClick|--------------------
 
@@ -76,7 +69,10 @@ function checkWinner() {
     });
     if (count === 9) {
         if (!hasWinner()) {
-            refs.result.textContent = 'DWAW';
+            refs.result.textContent = 'DRAW';
+            refs.drawsCounter.textContent =
+                Number(refs.drawsCounter.textContent) + 1;
+            refs.game.removeEventListener('click', onGameClick);
         }
     }
 }
@@ -99,6 +95,8 @@ function xWinner(winCombination) {
     clearTimeout(timeoutId);
     addClass(winCombination);
     refs.result.textContent = 'Winner: X';
+    refs.playerWinsCounter.textContent =
+        Number(refs.playerWinsCounter.textContent) + 1;
     refs.game.removeEventListener('click', onGameClick);
 }
 
@@ -106,6 +104,7 @@ function oWinner(winCombination) {
     clearTimeout(timeoutId);
     addClass(winCombination);
     refs.result.textContent = 'Winner: 0';
+    refs.aiWinsCounter.textContent = Number(refs.aiWinsCounter.textContent) + 1;
     refs.game.removeEventListener('click', onGameClick);
 }
 
