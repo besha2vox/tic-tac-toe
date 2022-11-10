@@ -12,6 +12,10 @@ const refs = {
     drawsCounter: document.querySelector('.draws-counter'),
 };
 
+const STORAGE_AI_WINS_COUNTER = 'ai';
+const STORAGE_PLAYER_WINS_COUNTER = 'player';
+const STORAGE_DRAWS_COUNTER = 'draw';
+
 let step = false;
 let count = 0;
 let timeoutId = null;
@@ -54,10 +58,8 @@ function stepZero() {
 
     refs.fields[indx].innerHTML = zero;
     refs.fields[indx].classList.add('o', 'clicked');
-
-    checkWinner();
-
     refs.game.addEventListener('click', onGameClick);
+    checkWinner();
 }
 
 //* --------------------|checkWinner|--------------------
@@ -73,6 +75,10 @@ function checkWinner() {
             refs.drawsCounter.textContent =
                 Number(refs.drawsCounter.textContent) + 1;
             refs.game.removeEventListener('click', onGameClick);
+            localStorage.setItem(
+                STORAGE_DRAWS_COUNTER,
+                refs.drawsCounter.textContent
+            );
         }
     }
 }
@@ -98,6 +104,10 @@ function xWinner(winCombination) {
     refs.playerWinsCounter.textContent =
         Number(refs.playerWinsCounter.textContent) + 1;
     refs.game.removeEventListener('click', onGameClick);
+    localStorage.setItem(
+        STORAGE_PLAYER_WINS_COUNTER,
+        refs.playerWinsCounter.textContent
+    );
 }
 
 function oWinner(winCombination) {
@@ -106,6 +116,10 @@ function oWinner(winCombination) {
     refs.result.textContent = 'Winner: 0';
     refs.aiWinsCounter.textContent = Number(refs.aiWinsCounter.textContent) + 1;
     refs.game.removeEventListener('click', onGameClick);
+    localStorage.setItem(
+        STORAGE_AI_WINS_COUNTER,
+        refs.aiWinsCounter.textContent
+    );
 }
 
 function hasWinner() {
@@ -130,3 +144,21 @@ function clearBoard(params) {
         item.classList.remove('x', 'o', 'active', 'clicked');
     });
 }
+
+(function rander() {
+    if (localStorage.getItem(STORAGE_AI_WINS_COUNTER)) {
+        refs.aiWinsCounter.textContent = localStorage.getItem(
+            STORAGE_AI_WINS_COUNTER
+        );
+    }
+    if (localStorage.getItem(STORAGE_PLAYER_WINS_COUNTER)) {
+        refs.playerWinsCounter.textContent = localStorage.getItem(
+            STORAGE_PLAYER_WINS_COUNTER
+        );
+    }
+    if (localStorage.getItem(STORAGE_DRAWS_COUNTER)) {
+        refs.drawsCounter.textContent = localStorage.getItem(
+            STORAGE_DRAWS_COUNTER
+        );
+    }
+})();
